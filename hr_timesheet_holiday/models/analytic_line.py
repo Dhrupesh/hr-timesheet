@@ -35,8 +35,8 @@ class AnalyticLine(models.Model):
     @api.multi
     def write(self, vals):
         if not self.env.context.get('force_write', False):
-            if self.account_id.is_leave_account \
-                    and self.leave_id:
+            if len(self.filtered(lambda r: r.account_id.is_leave_account and
+                                           r.leave_id)) != 0:
                 raise ValidationError(_(
                     "This line is protected against editing because it was "
                     "created automatically by a leave request. Please edit "
